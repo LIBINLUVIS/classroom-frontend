@@ -1,25 +1,40 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Room from "./containers/Room";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './containers/Home'
+import ClassView from './containers/ClassView'
+import Login from './containers/Login'
+import Signup from './containers/Signup'
+import ResetPassword from './containers/ResetPassword'
+import ResetPasswordConfirm from './containers/ResetPasswordConfirm'
+import Layout from './hocs/Layout';
+import {Provider} from 'react-redux';
+import store from './Store';
+import Addwork from './containers/Addwork';
+import Works from './containers/Works';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  <Provider store={store}>
+      <Router>
+            <Layout>
+                <Switch>
+                    <Route exact path='/' component={Home} />
+                    <Route exact path='/class' component={ClassView} />
+                    <Route exact path='/Room/:id' component={Room} />
+                    <Route exact path='/login' component={Login} />
+                    <Route exact path='/signup' component={Signup} />
+                    <Route exact path='/Addwork/:id' component={Addwork} />
+                    <Route exact path='/Works' component={Works} />
+               
+                </Switch>
+            </Layout>
+      </Router>
+  </Provider>
+   
+  )
 }
 
-export default App;
+export default App
