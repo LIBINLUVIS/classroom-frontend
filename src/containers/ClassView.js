@@ -5,6 +5,8 @@ import "../App.css";
 import { Link, Route } from "react-router-dom";
 import Room from "./Room";
 import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import {
   Dropdown,
   DropdownButton,
@@ -17,6 +19,7 @@ function Classview() {
   const api1 = "http://127.0.0.1:8000/user-class/";
 
   const [classview, setClassview] = useState([]);
+  const [status, setStatus] = useState(true);
 
   useEffect(() => {
     const config = {
@@ -27,9 +30,10 @@ function Classview() {
     };
     const res = axios.get(api1, config).then((res) => {
       setClassview(res.data);
+      setStatus(false);
     });
   }, []);
-console.log(classview)
+
   const addclass = () => {
     const classname = prompt("Add class Name");
     if (classname) {
@@ -43,16 +47,22 @@ console.log(classview)
 
       const res = axios.post(api, body, config).then((res) => {
         alert("Class have been Created Successfully!!!");
-        
       });
-      
     }
   };
-
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: "flex",
+      "& > * + *": {
+        marginLeft: theme.spacing(2),
+      },
+    },
+  }));
+  const classes = useStyles();
   return (
     <div className="">
       <div className="text-center">
-        <h4 className="mt-3">Welcome to ClassRoom</h4>
+        <h4 className="mt-3">Welcome to Classroom</h4>
         <hr />
       </div>
       <div className="container">
@@ -74,24 +84,32 @@ console.log(classview)
         </div>
 
         <div className="row">
-          {classview.map((item) => (
-            <div className="col-md-4 col-12 mt-5">
-              <Card>
-                <Card.Img variant="top" className="class" src={logo} />
-                <Card.Body>
-                  <Card.Title>{item.classname}</Card.Title>
-                  <Card.Text>{item.discription}</Card.Text>
-                  <Card.Text>{item.username}
-                  </Card.Text>
-                  <Card.Text>{item.created}
-                  </Card.Text>
-                  <Link to={`/Room/${item.id}`}>
-                    <Button variant="primary">Go to Class</Button>
-                  </Link>
-                </Card.Body>
-              </Card>
-            </div>
-          ))}
+          {status ? (
+            <>
+              <div className={classes.root}>
+                <CircularProgress />
+              </div>
+            </>
+          ) : (
+            <>
+              {classview.map((item) => (
+                <div className="col-md-4 col-12 mt-5">
+                  <Card>
+                    <Card.Img variant="top" className="class" src={logo} />
+                    <Card.Body>
+                      <Card.Title>{item.classname}</Card.Title>
+                      <Card.Text>{item.discription}</Card.Text>
+                      <Card.Text>{item.username}</Card.Text>
+                      <Card.Text>{item.created}</Card.Text>
+                      <Link to={`/Room/${item.id}`}>
+                        <Button variant="primary">Go to Class</Button>
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>

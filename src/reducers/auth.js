@@ -45,6 +45,7 @@ export default function(state=initialState,action){  //initialsate is comming fr
 
             }
         case USER_LOADED_SUCCESS:
+            
             return{
                 ...state,
                 user:payload  

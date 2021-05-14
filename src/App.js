@@ -13,6 +13,7 @@ import {Provider} from 'react-redux';
 import store from './Store';
 import Addwork from './containers/Addwork';
 import Works from './containers/Works';
+import Submit from './containers/Submit';
 
 
 function App() {
@@ -27,7 +28,8 @@ function App() {
                     <Route exact path='/login' component={Login} />
                     <Route exact path='/signup' component={Signup} />
                     <Route exact path='/Addwork/:id' component={Addwork} />
-                    <Route exact path='/Works' component={Works} />
+                    <Route exact path='/Works/:id' component={Works} />
+                    <Route exact path='/Submit/:id' component={Submit} />
                
                 </Switch>
             </Layout>
