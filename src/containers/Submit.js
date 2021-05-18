@@ -15,6 +15,7 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 function Submit(props) {
   const user=useSelector(state=>state.auth.user)
+  const auth=useSelector(state=>state.auth.isAuthenticated)
   const api = `http://127.0.0.1:8000/Submitwork/${props.match.params.id}/`;
   const submitionapi = `http://127.0.0.1:8000/StudentWork/${props.match.params.id}/`;
 
@@ -131,43 +132,44 @@ const check=()=>{
 }
   return (
     <div className="container">
-      <div className="row">
+      {auth?<>
+        <div className="row">
     
-       {check()?<Link to={`/Works/${props.match.params.id}`}>
-        <button style={{marginTop:'20px',marginLeft:'20px'}}>Submited works</button>
-       </Link>:null} 
-        <div className="col-md-12 col-12 mt-5">
-          {activity.map((item) => (
-            <Card>
-              <Card.Header>Work</Card.Header>
-              <Card.Body>
-                <blockquote className="blockquote mb-0">
-                  <p>
-                    {" "}
-                    {item.discription}.<br />
-                    Submition at: {item.created}{" "}
-                  </p>
-                  <footer className="">
-                    {activity[0].file ? (
-                      <>
-                        <AttachmentIcon />{" "}
-                        <Button onClick={openfile} varient="info">
-                          View File
-                        </Button>{" "}
-                      </>
-                    ) : (
-                      <>
-                        <p>No Attachments</p>
-                      </>
-                    )}
-                  </footer>
-                </blockquote>
-              </Card.Body>
-            </Card>
-          ))}
-        </div>
-      </div>
-      <div clasName="row ">
+    {check()?<Link to={`/Works/${props.match.params.id}`}>
+     <button style={{marginTop:'20px',marginLeft:'20px'}} class="btn btn-info">Submited works</button>
+    </Link>:null} 
+     <div className="col-md-12 col-12 mt-5">
+       {activity.map((item) => (
+         <Card>
+           <Card.Header>Work</Card.Header>
+           <Card.Body>
+             <blockquote className="blockquote mb-0">
+               <p>
+                 {" "}
+                 {item.discription}.<br />
+                <span >Due at</span> : {item.submition}{" "}
+               </p>
+               <footer className="">
+                 {activity[0].file ? (
+                   <>
+                     <AttachmentIcon />{" "}
+                     <Button onClick={openfile} varient="info">
+                       View File
+                     </Button>{" "}
+                   </>
+                 ) : (
+                   <>
+                     <p>No Attachments</p>
+                   </>
+                 )}
+               </footer>
+             </blockquote>
+           </Card.Body>
+         </Card>
+       ))}
+     </div>
+   </div>
+   <div clasName="row ">
         <div className="col-md-12 col-12 mt-5">
           <Card className="text-center">
             <Card.Header>Upload</Card.Header>
@@ -214,6 +216,7 @@ const check=()=>{
           </Alert>
         </Snackbar>
       </div>
+      </>:<Redirect to="/"/>}
 
       <div className="row">
         <div className="col-md-12 col-12 mt-5">

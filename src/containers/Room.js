@@ -3,12 +3,12 @@ import AddIcon from "@material-ui/icons/Add";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import { Row, Container } from "react-bootstrap";
+import {useSelector} from 'react-redux';
 import { makeStyles } from "@material-ui/core/styles";
+import EditIcon from '@material-ui/icons/Edit';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {
   Dropdown,
-  DropdownButton,
-  ButtonGroup,
   Card,
   Button,
 } from "react-bootstrap";
@@ -20,6 +20,9 @@ function Room(props) {
   const [info, setInfo] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [status, setStatus] = useState(true);
+  const user=useSelector(state=>state.auth.isAuthenticated)
+  const user_id=useSelector(state=>state.auth.user.id)
+  const id=props.match.params.id
   useEffect(() => {
     const config = {
       headers: {
@@ -32,6 +35,7 @@ function Room(props) {
       
     });
   }, []);
+ 
   useEffect(() => {
     const config = {
       headers: {
@@ -56,12 +60,20 @@ function Room(props) {
 
   return (
     <div className="">
-      <Container>
+      {user?<>
+        <Container>
         <Row>
           <div className="col-md-6 col-6 mt-4">
             <h5>{info.classname}</h5>
           </div>
-          <div className="ml-auto mt-3">
+          {user_id==info.user?<>
+          <div className="mt-4   ml-auto">
+          <Link to={`/Editclass/${props.match.params.id}`} style={{textDecoration:'none',color:'black'}}>
+          <EditIcon />
+          </Link>
+          </div>
+          </>:null}
+          <div className="ml-auto mt-3"> 
             <div className="addicon col-md-6 col-6">
               <Dropdown>
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -69,12 +81,9 @@ function Room(props) {
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item>
-                    <Link to={`/Addwork/${props.match.params.id}`}>
+                    <Link to={`/Addwork/${props.match.params.id}`} style={{textDecoration:'none',color:'black'}}>
                       Add Works
                     </Link>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Link to="/Work">Submited Works </Link>
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -107,6 +116,9 @@ function Room(props) {
           </div>
         </Row>
       </Container>
+      
+      </>:<Redirect to="/" />}
+
     </div>
   );
 }

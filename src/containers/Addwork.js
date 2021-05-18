@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import { Form, Dropdown, DropdownButton } from "react-bootstrap";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
+import {useSelector} from 'react-redux';
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
+import { Redirect } from "react-router-dom";
+import Datepicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css'
 function Addwork(props) {
+  const user=useSelector(state=>state.auth.isAuthenticated)
   const ref = React.useRef();
   const api = `http://127.0.0.1:8000/Addworks/${props.match.params.id}/`;
   const [discription, setDiscription] = useState("");
@@ -16,7 +21,9 @@ function Addwork(props) {
   const [status, setStatus] = useState(false);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = React.useState(false);
+  const [submition,setSubmition] = useState(null)
 
+  
   function handleClick() {
     ref.current.value = "";
   }
@@ -60,6 +67,7 @@ function Addwork(props) {
     const uploadData = new FormData();
     uploadData.append("discription", discription);
     uploadData.append("file", file, file.name);
+    uploadData.append("submition",submition)
     const body = uploadData;
 
     const config = {
@@ -70,7 +78,7 @@ function Addwork(props) {
       onUploadProgress: (ProgressEvent) => {
         const { loaded, total } = ProgressEvent;
         let percent = Math.floor((loaded * 100) / total);
-        if (percent < 100) {
+        if (percent < 100) { 
           setProgress(percent);
         }
       },
@@ -89,9 +97,9 @@ function Addwork(props) {
 
   return (
     <div className="container mt-4">
-      <h5>AddWorks</h5>
-      <hr />
-      <div className="row mt-5">
+      {user?<>
+        <h5>AddWorks</h5><hr/>
+        <div className="row mt-5">
         <form className="addwork-form" onSubmit={(e) => onSubmit(e)}>
           <label for="start">discription of work:</label>
           <Form.Control
@@ -102,28 +110,26 @@ function Addwork(props) {
             placeholder="text..."
           />
           <br />
-          <label for="start">date to be submitted:</label>
-          <input
-            type="date"
-            id="start"
-            name="trip-start"
-            value="2018-07-22"
-            min="2018-01-01"
-            max="2018-12-31"
-          ></input>
-          <br />
-          <label for="start">File:</label>
+          <label for="start">Date to be submitted:</label><br/>          
+          <Datepicker selected={submition} onChange={date=>setSubmition(date)}/><br/>
+          <label for="start" class="mt-3">File:</label>
           <Form.Control
             type="file"
             ref={ref}
             onChange={(e) => setFile(e.target.files[0])}
           />
           <br />
-          <Button variant="contained" color="primary" type="submit">
+
+          <Button variant="contained" color="primary"  type="submit">
             Add Work
           </Button>
         </form>
       </div>
+
+      </>:<Redirect to="/login"/>}
+      
+     
+
       <div className="row">
         <div className="col-md-12 col-12 mt-5">
           {status ? (
@@ -135,7 +141,7 @@ function Addwork(props) {
       </div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
-          Work Submited Successfully !
+          Work Created Successfully !
         </Alert>
       </Snackbar>
     </div>

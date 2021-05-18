@@ -6,9 +6,8 @@ import Home from './containers/Home'
 import ClassView from './containers/ClassView'
 import Login from './containers/Login'
 import Signup from './containers/Signup'
-import ResetPassword from './containers/ResetPassword'
-import ResetPasswordConfirm from './containers/ResetPasswordConfirm'
 import Layout from './hocs/Layout';
+import Editclass from './containers/Editclass'
 import {Provider} from 'react-redux';
 import store from './Store';
 import Addwork from './containers/Addwork';
@@ -30,6 +29,7 @@ function App() {
                     <Route exact path='/Addwork/:id' component={Addwork} />
                     <Route exact path='/Works/:id' component={Works} />
                     <Route exact path='/Submit/:id' component={Submit} />
+                    <Route exact path='/Editclass/:id' component={Editclass} />
                
                 </Switch>
             </Layout>
