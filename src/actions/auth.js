@@ -15,6 +15,7 @@ import {
 } from './types'
 
 
+
 const api="http://localhost:8000/userinfo/";
 const url="http://127.0.0.1:8000/api/login/";
 const api2="http://127.0.0.1:8000/api/register/";
@@ -88,7 +89,8 @@ export const checkAuthenticated=() => async dispatch => {  //checking the state 
 };
 
 export const login = (username, password) => async dispatch => {
-  
+    
+    
 
   
     const config = {
@@ -108,14 +110,23 @@ export const login = (username, password) => async dispatch => {
             payload: res.data
         });
 
+
       dispatch(load_user()); 
+     return{
+         status:false
+     }
     } catch (err) {
         
-        console.log(err.error)
+        // alert("Oops You entered Wrong password or username !")
+       
         dispatch({
             type: LOGIN_FAIL
         })
+        return{
+            status:true
+        }
     }
+
 };
 
 export const signup = (username,email, password) => async dispatch => {

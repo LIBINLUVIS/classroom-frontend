@@ -10,7 +10,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-
+import Alert from "@material-ui/lab/Alert";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {
   Dropdown,
   DropdownButton,
@@ -18,16 +24,18 @@ import {
   Card,
   Button,
 } from "react-bootstrap";
+
 function Classview() {
   const api = "http://127.0.0.1:8000/create-class/";
   const api1 = "http://127.0.0.1:8000/user-class/";
-  const getjoinedclass="http://127.0.0.1:8000/getjoinclass";
+  const getjoinedclass = "http://127.0.0.1:8000/getjoinclass";
   const [classview, setClassview] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [status, setStatus] = useState(true);
-  const [joinclass,setJoinclass]= useState(false)
-  const [createclass,setCreateclass] = useState(false)
-  const [joinclassinfo,setJoinclassinfo] = useState([])
+  const [joinclass, setJoinclass] = useState(false);
+  const [createclass, setCreateclass] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [joinclassinfo, setJoinclassinfo] = useState([]);
   const user = useSelector((state) => state.auth.isAuthenticated);
   useEffect(() => {
     const config = {
@@ -53,17 +61,17 @@ function Classview() {
       setStatus(false);
     });
   }, [createclass]);
-  useEffect(()=>{
+  useEffect(() => {
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${localStorage.getItem("access")}`,
       },
     };
-     axios.get(getjoinedclass, config).then((res) => {
+    axios.get(getjoinedclass, config).then((res) => {
       setJoinclassinfo(res.data);
     });
-  },[joinclass])
+  }, [joinclass]);
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -74,27 +82,34 @@ function Classview() {
 
     setOpen(false);
   };
-  const join=()=>{
-    const class_id=prompt("Enter the Class Code");
+
+
+  const join = () => {
+    const class_id = prompt("Enter the Class Code");
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${localStorage.getItem("access")}`,
       },
     };
-    if(class_id){
-      setJoinclass(true)
-      const joinapi=`http://127.0.0.1:8000/Joinclass/${class_id}/`;
-      axios.get(joinapi,config).then((res) => {
-        setOpen(true);
-      });
-    }     
-  }
- 
+    if (class_id) {
+      setJoinclass(true);
+      const joinapi = `http://127.0.0.1:8000/Joinclass/${class_id}/`;
+      axios
+        .get(joinapi, config)
+        .then((res) => {
+          setOpen(true);
+        })
+        .catch((err) => {
+         setAlert(true)
+        });
+    }
+  };
+
   const addclass = () => {
     const classname = prompt("Add class Name");
     if (classname) {
-        const config = {
+      const config = {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Token ${localStorage.getItem("access")}`,
@@ -102,10 +117,15 @@ function Classview() {
       };
       const body = JSON.stringify({ classname: classname });
 
-      const res = axios.post(api, body, config).then((res) => {
-        setCreateclass(true)
-        setOpen(true);
-      });
+      axios
+        .post(api, body, config)
+        .then((res) => {
+          setCreateclass(true);
+          setOpen(true);
+        })
+        .catch((err) => {
+         setAlert(true)
+        });
     }
   };
   const useStyles = makeStyles((theme) => ({
@@ -117,8 +137,20 @@ function Classview() {
     },
   }));
   const classes = useStyles();
+ 
+
   return (
     <div className="">
+            {alert ? (
+       <>
+          <div className={classes.root}>
+            <Alert variant="filled" severity="error">
+              Failed to join check your join code — check it out!
+            </Alert>
+          </div>
+
+       </>
+      ) : null}
       {user ? (
         <>
           <div className="text-center">
@@ -157,7 +189,7 @@ function Classview() {
                   {classview.map((item) => (
                     <div className="col-md-4 col-12 mt-5">
                       <Card>
-                        <Card.Img variant="top" className="class" src={logo} />
+                        <Card.Img variant="top" className="class" src={logo} />                     
                         <Card.Body>
                           <Card.Title>{item.classname}</Card.Title>
                           <Card.Text>{item.discription}</Card.Text>
@@ -168,47 +200,59 @@ function Classview() {
                           </Link>
                         </Card.Body>
                       </Card>
-                      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                            <Alert onClose={handleClose} severity="success">
-                              Action Successfull !
-                            </Alert>
-                      </Snackbar>
-                    </div>
-
-                  ))}
-                  {joinclassinfo?<>
-                    {joinclassinfo.map((item) => (
-                    <div className="col-md-4 col-12 mt-5">
-                      <Card>
-                        <Card.Img variant="top" className="class" src={logo} />
-                        <Card.Body>
-                          <Card.Title>{item.classname}</Card.Title>
-                          <Card.Text>{item.discription}</Card.Text>
-                          <Card.Text>{item.username}</Card.Text>
-                          <Card.Text>{item.created}</Card.Text>
-                          <Link to={`/Room/${item.id}`}>
-                            <Button variant="primary">Go to Class</Button>
-                          </Link>
-                        </Card.Body>
-                      </Card>
-                      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                            <Alert onClose={handleClose} severity="success">
-                              Action Successfull !
-                            </Alert>
+                      <Snackbar
+                        open={open}
+                        autoHideDuration={6000}
+                        onClose={handleClose}
+                      >
+                        <Alert onClose={handleClose} severity="success">
+                          Class Action Successfull !
+                        </Alert>
                       </Snackbar>
                     </div>
                   ))}
-                  </>:<></>}
+                  {joinclassinfo ? (
+                    <>
+                      {joinclassinfo.map((item) => (
+                        <div className="col-md-4 col-12 mt-5">
+                          <Card>
+                            <Card.Img
+                              variant="top"
+                              className="class"
+                              src={logo}
+                            />
+                            <Card.Body>
+                              <Card.Title>{item.classname}</Card.Title>
+                              <Card.Text>{item.discription}</Card.Text>
+                              <Card.Text>{item.username}</Card.Text>
+                              <Card.Text>{item.created}</Card.Text>
+                              <Link to={`/Room/${item.id}`}>
+                                <Button variant="primary">Go to Class</Button>
+                              </Link>
+                            </Card.Body>
+                          </Card>
+                          <Snackbar
+                            open={open}
+                            autoHideDuration={6000}
+                            onClose={handleClose}
+                          >
+                            <Alert onClose={handleClose} severity="success">
+                              Action Successfull !
+                            </Alert>
+                          </Snackbar>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </>
-            
               )}
             </div>
           </div>
         </>
-      ) : (
-        // <Redirect to="/" />
-        null
-      )}
+      ) : // <Redirect to="/" />
+      null}
     </div>
   );
 }

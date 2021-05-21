@@ -12,6 +12,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
+
+
+
+
 function Addwork(props) {
   const user=useSelector(state=>state.auth.isAuthenticated)
   const ref = React.useRef();
@@ -19,8 +23,9 @@ function Addwork(props) {
   const [discription, setDiscription] = useState("");
   const [file, setFile] = useState();
   const [status, setStatus] = useState(false);
+  const [alert,setAlert] = useState(false)
   const [progress, setProgress] = useState(0);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false); 
   const [submition,setSubmition] = useState(null)
 
   
@@ -62,12 +67,13 @@ function Addwork(props) {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-
     setStatus(true);
     const uploadData = new FormData();
-    uploadData.append("discription", discription);
-    uploadData.append("file", file, file.name);
-    uploadData.append("submition",submition)
+    
+      uploadData.append("discription", discription);
+      uploadData.append("file", file, file.name);
+      uploadData.append("submition",submition)
+    
     const body = uploadData;
 
     const config = {
@@ -92,32 +98,48 @@ function Addwork(props) {
       }, 1000);
       handleClick();
       setDiscription("");
-    });
+    }).catch((err)=>{
+       setAlert(true)
+    })
   };
-
+  const classes = useStyles();
   return (
     <div className="container mt-4">
       {user?<>
         <h5>AddWorks</h5><hr/>
         <div className="row mt-5">
-        <form className="addwork-form" onSubmit={(e) => onSubmit(e)}>
+          {alert?
+          <div className={classes.root}>
+            <Alert variant="filled" severity="error">
+            Oops File not uploaded — check it out! 
+            </Alert>
+            </div>:null}
+        <form className="addwork-form" onSubmit={(e) => onSubmit(e)} id="addwork-form">
           <label for="start">discription of work:</label>
+          <div className="form-group">
           <Form.Control
             size="lg"
             type="text"
+            name="disc"
             onChange={(e) => setDiscription(e.target.value)}
             value={discription}
             placeholder="text..."
+            required
           />
+          </div>
           <br />
           <label for="start">Date to be submitted:</label><br/>          
           <Datepicker selected={submition} onChange={date=>setSubmition(date)}/><br/>
           <label for="start" class="mt-3">File:</label>
+          <div className="form-group">
           <Form.Control
             type="file"
+            name="file"
             ref={ref}
             onChange={(e) => setFile(e.target.files[0])}
+            required
           />
+          </div>
           <br />
 
           <Button variant="contained" color="primary"  type="submit">

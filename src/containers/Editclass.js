@@ -12,6 +12,7 @@ function Editclass(props) {
   const api = `http://127.0.0.1:8000/create-class/${props.match.params.id}/`;
   const apiupdate=`http://127.0.0.1:8000/editclass/${props.match.params.id}/`;
   const [info, setInfo] = useState();
+  const [status,setStatus]=useState(false);
   const [updateinfo,setUpdateinfo] =useState({
       'classname':"",
       "discription":""
@@ -49,6 +50,7 @@ function Editclass(props) {
   };
 const updatehandler=(e)=>{
     e.preventDefault();
+    setStatus(true)
     const config = {
         headers: {
           "Content-Type": "application/json",
@@ -78,8 +80,13 @@ const onChange = e => setUpdateinfo({ ...updateinfo, [e.target.name]: e.target.v
               <Form.Label>Discription</Form.Label>
               <Form.Control type="text" onChange={e => onChange(e)} name="discription" value={discription} placeholder={info.discription} />
             </Form.Group>
-            <Button variant="primary" type="submit" >  
+            <Button variant="primary" type="submit" >
+              {status?<>
+              Updateing...
+              </>:<>
               Update
+              </>}
+              
             </Button>
           </Form> 
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>

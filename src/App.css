@@ -9,3 +9,8 @@ margin-bottom: auto;
 
 
 }
+.MuiCircularProgress-root { 
+    left: 43%; 
+    position: absolute; 
+    top: 22vh; 
+}
