@@ -1,5 +1,5 @@
 import React,{useState,Fragment} from 'react'
-import axios from 'axios'
+import axios from '../Axios';
 import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
@@ -16,9 +16,9 @@ import {
 
 
 
-const api="http://localhost:8000/userinfo/";
-const url="http://127.0.0.1:8000/api/login/";
-const api2="http://127.0.0.1:8000/api/register/";
+const api="userinfo/";
+const url="api/login/";
+const api2="register/";
 
 
 export const load_user = () => async dispatch => {   

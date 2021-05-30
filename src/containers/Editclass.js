@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from '../Axios';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,8 +9,8 @@ import {
   } from "react-bootstrap";
 import { Container } from "@material-ui/core";
 function Editclass(props) {
-  const api = `http://127.0.0.1:8000/create-class/${props.match.params.id}/`;
-  const apiupdate=`http://127.0.0.1:8000/editclass/${props.match.params.id}/`;
+  const api = `create-class/${props.match.params.id}/`;
+  const apiupdate=`editclass/${props.match.params.id}/`;
   const [info, setInfo] = useState();
   const [status,setStatus]=useState(false);
   const [updateinfo,setUpdateinfo] =useState({
@@ -67,6 +67,7 @@ const updatehandler=(e)=>{
 const { classname,discription } =updateinfo ;
 const onChange = e => setUpdateinfo({ ...updateinfo, [e.target.name]: e.target.value });
   return (
+    <main>
     <div>
       {info ? (
         <Container className="mt-5">
@@ -99,6 +100,7 @@ const onChange = e => setUpdateinfo({ ...updateinfo, [e.target.name]: e.target.v
         <></>
       )}
     </div>
+    </main>
   );
 }
 

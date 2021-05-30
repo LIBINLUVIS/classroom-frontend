@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
+import '../component css/login.css';
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { login } from "../actions/auth";
@@ -6,7 +7,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 
 
+
 function Login({ login, isAuthenticated }) {
+  
   const useStyles = makeStyles((theme) => ({
     root: {
       width: "100%",
@@ -45,15 +48,17 @@ function Login({ login, isAuthenticated }) {
   const handlelogin=()=>{
     setLoginstatus(true)
   }
- 
+  
   return (
-    <div className="container mt-5" >
-      <h1>Sign In</h1>
+    <main>
+    <div className="container-login mt-5" >
+      <div className="app-wrapper">
+      <h1 className="title">Sign In</h1>
       <p>Sign into your Account</p>
-      <form onSubmit={(e) => onSubmit(e)}>
+      <form onSubmit={(e) => onSubmit(e)} className="form-wrapper">
         <div className="form-group">
           <input
-            className="form-control"
+            className="input"
             type="text"
             placeholder="Username"
             name="username"
@@ -65,7 +70,7 @@ function Login({ login, isAuthenticated }) {
 
         <div className="form-group">
           <input
-            className="form-control"
+            className="input"
             type="password"
             placeholder="Password"
             name="password"
@@ -75,7 +80,7 @@ function Login({ login, isAuthenticated }) {
             required
           />
         </div>
-        <button className="btn btn-primary" type="submit" onClick={handlelogin}>
+        <button className="btn" type="submit" onClick={handlelogin}>
           {loginstatus?<>
            Please Wait...
           </>:<>Login</>}
@@ -90,7 +95,9 @@ function Login({ login, isAuthenticated }) {
           </div>
         </>
       ) : null}
+      </div>
     </div>
+    </main>
   );
 }
 

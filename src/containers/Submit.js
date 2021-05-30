@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from '../Axios';
 import { useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
@@ -20,8 +20,8 @@ import { green, pink } from "@material-ui/core/colors";
 function Submit(props) {
   const user = useSelector((state) => state.auth.user);
   const auth = useSelector((state) => state.auth.isAuthenticated);
-  const api = `http://127.0.0.1:8000/Submitwork/${props.match.params.id}/`;
-  const submitionapi = `http://127.0.0.1:8000/StudentWork/${props.match.params.id}/`;
+  const api = `Submitwork/${props.match.params.id}/`;
+  const submitionapi = `StudentWork/${props.match.params.id}/`;
 
   const [activity, setActivity] = useState([]);
   const ref = React.useRef();
@@ -31,6 +31,9 @@ function Submit(props) {
   const [status, setStatus] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [progress, setProgress] = useState(0);
+
+
+
   useEffect(() => {
     const config = {
       headers: {
@@ -42,6 +45,7 @@ function Submit(props) {
       setActivity(res.data);
     });
   }, []);
+
 
   const openfile = () => {
     const file = `http://127.0.0.1:8000${activity[0].file}/`;
@@ -136,6 +140,7 @@ function Submit(props) {
     }
   };
   return (
+    <main>
     <div className="container">
       {auth ? (
         <>
@@ -163,6 +168,7 @@ function Submit(props) {
             ) : null}
 
             <div className="col-md-12 col-12 mt-5">
+            {activity?<>
               {activity.map((item) => (
                 <Card>
                   <Card.Header>
@@ -193,12 +199,12 @@ function Submit(props) {
                       
                       <footer style={{marginTop:"15px"}}>
                         {activity[0].file ? (
-                          <>
-                            <AttachmentIcon />{" "}
-                            <Button onClick={openfile} varient="info">
+                          <div style={{display:"flex"}}>
+                            <AttachmentIcon style={{fontSize:"30px"}} />
+                            <Button onClick={openfile} varient="info" >
                               View File
-                            </Button>{" "}
-                          </>
+                            </Button>
+                          </div>
                         ) : (
                           <>
                             <p>No Attachments</p>
@@ -209,6 +215,12 @@ function Submit(props) {
                   </Card.Body>
                 </Card>
               ))}
+            
+            </>:                    <>
+                      <CircularProgress className="mt-5" />
+                    </>}
+              
+
             </div>
           </div>
           <div clasName="row ">
@@ -244,6 +256,7 @@ function Submit(props) {
                           </div>
                         </div>
                       </div>
+                      
                       <Button
                         variant="success"
                         style={{ marginTop: "35px" }}
@@ -274,6 +287,7 @@ function Submit(props) {
         </div>
       </div>
     </div>
+    </main>
   );
 }
 

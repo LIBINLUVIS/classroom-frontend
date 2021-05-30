@@ -5,7 +5,6 @@ import "../App.css";
 import { Link, Route, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Room from "./Room";
-import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -24,11 +23,12 @@ import {
   Card,
   Button,
 } from "react-bootstrap";
+import axios from '../Axios';
 
 function Classview() {
-  const api = "http://127.0.0.1:8000/create-class/";
-  const api1 = "http://127.0.0.1:8000/user-class/";
-  const getjoinedclass = "http://127.0.0.1:8000/getjoinclass";
+  const api = "create-class/";
+  const api1 = "user-class/";
+  const getjoinedclass = "getjoinclass";
   const [classview, setClassview] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [status, setStatus] = useState(true);
@@ -140,12 +140,13 @@ function Classview() {
  
 
   return (
+    <main>
     <div className="">
             {alert ? (
        <>
           <div className={classes.root}>
             <Alert variant="filled" severity="error">
-              Failed to join check your join code — check it out!
+           Something Went Wrong Action Failed — check it out!
             </Alert>
           </div>
 
@@ -154,7 +155,7 @@ function Classview() {
       {user ? (
         <>
           <div className="text-center">
-            <h4 className="mt-3">Welcome to Classroom</h4>
+            <h4 className="mt-3">Your Classes</h4>
             <hr />
           </div>
           <div className="container">
@@ -181,13 +182,13 @@ function Classview() {
               {status ? (
                 <>
                   <div className={classes.root}>
-                    <CircularProgress />
+                    <CircularProgress color="secondary"/>
                   </div>
                 </>
               ) : (
                 <>
                   {classview.map((item) => (
-                    <div className="col-md-4 col-12 mt-5">
+                    <div className="col-md-4 col-12 mt-5 mb-4">
                       <Card>
                         <Card.Img variant="top" className="class" src={logo} />                     
                         <Card.Body>
@@ -214,7 +215,7 @@ function Classview() {
                   {joinclassinfo ? (
                     <>
                       {joinclassinfo.map((item) => (
-                        <div className="col-md-4 col-12 mt-5">
+                        <div className="col-md-4 col-12 mt-5 mb-3">
                           <Card>
                             <Card.Img
                               variant="top"
@@ -254,6 +255,7 @@ function Classview() {
       ) : // <Redirect to="/" />
       null}
     </div>
+    </main>
   );
 }
 

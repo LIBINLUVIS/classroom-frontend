@@ -1,4 +1,5 @@
 import React from "react";
+import '../Svg/Svg.css'
 //Bootstrap and jQuery libraries
 import "bootstrap/dist/css/bootstrap.min.css";
 import "jquery/dist/jquery.min.js";
@@ -7,19 +8,8 @@ import "datatables.net-dt/js/dataTables.dataTables";
 import { connect } from "react-redux";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import $ from "jquery";
-import { Redirect } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
-const useStyles=makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    "& > * + *": {
-      marginLeft: theme.spacing(2),
-    },
-  },
-}));
-
+import Rotatemob from '../Svg/Rotatemob';
 class Works extends React.Component {
   state = {
     datas: [],
@@ -49,60 +39,78 @@ class Works extends React.Component {
 
   render() {
     return (
-      <div className="container">
-        <h2 className="mt-3">Submited Works</h2>
-        <hr />
-        <div className="row mt-5">
-          <div className="col-md-12 col-6">
-            {this.state.status ? (
-              <>
-                <table id="example">
-                  <thead>
-                    <tr>
-                      <th>Time</th>
-                      <th>Student</th>
-                      <th>Message</th>
-                      <th>File</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.datas ? (
-                      <>
-                        {this.state.datas.map((x) => (
-                          <tr>
-                            <td>{x.created}</td>
-                            <td>{x.student}</td>
-                            <td>{x.Message}</td>
-                            <td>
-                              <a
-                                href={`http://127.0.0.1:8000${x.file}/`}
-                                target="_blank"
-                              >
-                                <FileCopyIcon />
-                              </a>
-                            </td>
-                          </tr>
-                        ))}
-                      </>
-                    ) : null}
-                  </tbody>
-                </table>
-              </>
-            ) : (
-
-              <div>
-                <CircularProgress style={{marginLeft:"47%"}}/>
-              </div>
-            )}
+      <main>
+        
+        <div className="container">
+          <div  style={{ color: "white" ,display:"flex",justifyContent:"space-around"}}>
+          <h2 className="mt-3" >
+            Submited Works </h2>
+           <div style={{marginTop:"20px"}} id="rotation-icon">
+            <Rotatemob/>           
+            </div>
           </div>
+          
+          <hr />
         </div>
-      </div>
+
+        {this.state.status ? (
+          <div
+            data-role="page"
+            data-theme="a"
+            style={{ width: "100%" }}
+            class="container"
+            id="one"
+            data-title="jQM-Tables"
+          >
+            <table id="example" data-role="table" data-mode="columntoggle">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th data-priority="1">Student</th>
+                  <th>Message</th>
+                  <th>File</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {this.state.datas ? (
+                  <>
+                    {this.state.datas.map((x) => (
+                      <tr>
+                        <td>{x.created}</td>
+                        <td>{x.student}</td>
+                        <td>{x.Message}</td>
+                        <td>
+                          <a
+                            href={`http://127.0.0.1:8000${x.file}/`}
+                            target="_blank"
+                          >
+                            <FileCopyIcon />
+                          </a>
+                        </td>
+                      </tr>
+                    ))}
+                  </>
+                ) : (
+                   null
+                )}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div>
+          <CircularProgress
+            style={{ marginLeft: "", color: "pink" }}
+          />
+        </div>
+        )}
+      </main>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated, //to be fixed---Auth checking and rendering...
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, null)(Works);

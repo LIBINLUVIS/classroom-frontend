@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import '../component css/login.css';
 import { connect } from 'react-redux';
 import { signup } from '../actions/auth';
-import axios from 'axios';
+
 
 function Signup({signup, isAuthenticated}) {
     const [accountCreated, setAccountCreated] = useState(false);
@@ -39,16 +40,18 @@ function Signup({signup, isAuthenticated}) {
     }
 
     return (
-        <div className='container mt-5'>
+        <main>
+        <div className='container-login mt-5'>
+            <div className="app-wrapper">
         <h1>Sign Up</h1>
         <p>Create your Account</p>
         <form onSubmit={e => onSubmit(e)}>
 
         <div className='form-group'>
                 <input
-                    className='form-control'
+                    className='input'
                     type='text'
-                    placeholder='Username'
+                    placeholder='Username*'
                     name='username'
                     value={username}
                     onChange={e => onChange(e)}
@@ -58,7 +61,7 @@ function Signup({signup, isAuthenticated}) {
 
             <div className='form-group'>
                 <input
-                    className='form-control'
+                    className='input'
                     type='email'
                     placeholder='Email*'
                     name='email'
@@ -69,7 +72,7 @@ function Signup({signup, isAuthenticated}) {
             </div>
             <div className='form-group'>
                 <input
-                    className='form-control'
+                    className='input'
                     type='password'
                     placeholder='Password*'
                     name='password'
@@ -81,7 +84,7 @@ function Signup({signup, isAuthenticated}) {
             </div>
             <div className='form-group'>
                 <input
-                    className='form-control'
+                    className='input'
                     type='password'
                     placeholder='Confirm Password*'
                     name='re_password'
@@ -91,13 +94,15 @@ function Signup({signup, isAuthenticated}) {
                     required
                 />
             </div>
-            <button className='btn btn-primary' type='submit'>Register</button>
+            <button className='btn' type='submit'>Register</button>
         </form>
  
         <p className='mt-3'>
             Already have an account? <Link to='/login'>Sign In</Link>
         </p>
-    </div>
+        </div>
+        </div>
+        </main>
 
     )
 }

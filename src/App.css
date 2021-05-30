@@ -1,3 +1,11 @@
+*{
+  margin: 0;
+  padding: 0;
+
+}
+body{
+  background:linear-gradient(135deg,#2e90d1,#8AE675);
+}
 .view{
     display: flex;
 }
@@ -13,4 +21,56 @@ margin-bottom: auto;
     left: 43%; 
     position: absolute; 
     top: 22vh; 
+}
+@media screen and (max-width: 1024px) {
+    .svg-icon {
+      margin-top: 150px;  
+    }
+}
+#hand_rotate{
+    animation: floatAnim 3s infinite alternate;
+    transform-origin:top;
+    transform-box: fill-box;
+}
+@keyframes floatAnim {
+    0% {
+      transform:rotate(-20deg);
+    }
+
+    100% {
+      transform:rotate(0deg);
+    }
+
+  }
+
+.fancy-text{
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 50px;
+  font-family: sans-serif;
+  font-style: inherit;
+}
+.icons{
+  display: flex;
+
+}
+main{
+
+   min-height: calc(100vh - 56px - 50px);
+
+}
+.fotter-icons{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  
+}
+.fa-github{
+  color: black;
+}
+.fa-envelope{
+  color:#FFFF00;
+}
+.fa-linkedin-square{
+  color: #0066CC;
 }

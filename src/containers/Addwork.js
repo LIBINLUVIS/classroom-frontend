@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Form, Dropdown, DropdownButton } from "react-bootstrap";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
+import axios from '../Axios';
 import {useSelector} from 'react-redux';
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
@@ -12,16 +12,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
 import Datepicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
-
+import store from "../Store";
 
 
 
 function Addwork(props) {
-  const user=useSelector(state=>state.auth.isAuthenticated)
+  const usercheck=useSelector(state=>state.auth.isAuthenticated)
+  const loginuserinfo=store.getState();
   const ref = React.useRef();
-  const api = `http://127.0.0.1:8000/Addworks/${props.match.params.id}/`;
+  const api = `Addworks/${props.match.params.id}/`;
+  const getinfo = `create-class/${props.match.params.id}/`;
   const [discription, setDiscription] = useState("");
   const [file, setFile] = useState();
+  const [auth,setAuth]=useState(false);
   const [status, setStatus] = useState(false);
   const [alert,setAlert] = useState(false)
   const [progress, setProgress] = useState(0);
@@ -32,6 +35,18 @@ function Addwork(props) {
   function handleClick() {
     ref.current.value = "";
   }
+  useEffect(()=>{
+   axios.get(getinfo).then((res)=>{
+     const userauth=res.data.user
+     if(usercheck){
+      if(userauth==loginuserinfo.auth.user.id){
+        setAuth(true)
+      }
+     }
+   })
+  },[]);
+ 
+  
   const useStyles = makeStyles((theme) => ({
     root: {
       width: "100%",
@@ -104,9 +119,10 @@ function Addwork(props) {
   };
   const classes = useStyles();
   return (
+    <main>
     <div className="container mt-4">
-      {user?<>
-        <h5>AddWorks</h5><hr/>
+      {auth ?<>
+        <h2 style={{color:"white"}}>AddWorks</h2><hr/>
         <div className="row mt-5">
           {alert?
           <div className={classes.root}>
@@ -124,7 +140,7 @@ function Addwork(props) {
             onChange={(e) => setDiscription(e.target.value)}
             value={discription}
             placeholder="text..."
-            required
+           
           />
           </div>
           <br />
@@ -148,7 +164,7 @@ function Addwork(props) {
         </form>
       </div>
 
-      </>:<Redirect to="/login"/>}
+      </>:<h2>You are not supposed to view this page</h2>}
       
      
 
@@ -167,6 +183,7 @@ function Addwork(props) {
         </Alert>
       </Snackbar>
     </div>
+    </main>
   );
 }
 

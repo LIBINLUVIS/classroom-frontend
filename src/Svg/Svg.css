@@ -1,0 +1,21 @@
+#rotatemob{
+    animation: floatAnim 3s infinite alternate;
+    transform-origin:center;
+    
+}
+@keyframes floatAnim {
+    0% {
+      transform:rotate(25deg);
+    }
+
+    100% {
+      transform:rotate(0deg);
+    }
+
+  }
+
+@media screen and (min-width: 768px) {
+    #rotation-icon{
+     display: none;  
+    }
+}

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import Fotter from  '../components/Footer';
 import { connect } from 'react-redux';
 import { checkAuthenticated,load_user } from '../actions/auth';
 
@@ -14,6 +15,7 @@ const Layout = ({ checkAuthenticated,load_user,children }) => {
         <div>
             <Navbar />
             {children}
+            <Fotter/>
         </div>
     );
 };
