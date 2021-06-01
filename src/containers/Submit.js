@@ -48,7 +48,7 @@ function Submit(props) {
 
 
   const openfile = () => {
-    const file = `http://127.0.0.1:8000${activity[0].file}/`;
+    const file = `${activity[0].file}`;
     if (activity[0].file != null) {
       window.open(file, "_blank");
     }
@@ -224,7 +224,7 @@ function Submit(props) {
             </div>
           </div>
           <div clasName="row ">
-            <div className="col-md-12 col-12 mt-5">
+            <div className="col-md-12 col-12 mt-5 mb-5">
               <Card className="text-center">
                 <Card.Header>Upload</Card.Header>
                 <Card.Body>
@@ -278,7 +278,7 @@ function Submit(props) {
       )}
 
       <div className="row">
-        <div className="col-md-12 col-12 mt-5">
+        <div className="col-md-12 col-12">
           {status ? (
             <>
               <LinearProgressWithLabel value={progress} />

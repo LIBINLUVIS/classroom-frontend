@@ -164,13 +164,16 @@ function Room(props) {
                     <>
                       {tasks.map((task) => (
                         <Card className="mt-5 mb-3">
-                          {completed.includes(task.id) ? (
+                          {!state.auth.user.id===task.auther?<>
+                            {completed.includes(task.id) ? (
                             <>
                               <Alert severity="success">
                                 Work has been Successfully Submited.
                               </Alert>
                             </>
                           ) : <Alert severity="warning">Work Pending — check it out!</Alert>}
+                          
+                          </>:null} 
                           <Card.Body>
                             <div style={{ display: "flex" }}>
                               <MoreVertIcon style={{ marginLeft: "auto" }} />
@@ -179,11 +182,14 @@ function Room(props) {
                               <Avatar
                                 variant="rounded"
                                 className={classes.rounded}
+                                
                               >
                                 <AssignmentIcon />
                               </Avatar>
                               <div style={{ marginLeft: "10px" }}>
                                 {task.discription}
+                            
+                               
                               </div>
                             </Card.Title>
 

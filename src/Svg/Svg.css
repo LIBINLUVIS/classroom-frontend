@@ -1,9 +1,9 @@
 #rotatemob{
-    animation: floatAnim 3s infinite alternate;
+    animation: mobrotate 3s infinite alternate;
     transform-origin:center;
     
 }
-@keyframes floatAnim {
+@keyframes mobrotate {
     0% {
       transform:rotate(25deg);
     }
