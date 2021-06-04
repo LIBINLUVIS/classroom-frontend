@@ -18,7 +18,7 @@ import {
 
 const api="userinfo/";
 const url="api/login/";
-const api2="register/";
+const api2="api/register/";
 
 
 export const load_user = () => async dispatch => {   
@@ -104,7 +104,8 @@ export const login = (username, password) => async dispatch => {
 
     try {
         const res = await axios.post(url, body, config);
-
+        
+    
         dispatch({
             type: LOGIN_SUCCESS,  //connecting with the reducer auth !!!
             payload: res.data
@@ -115,16 +116,18 @@ export const login = (username, password) => async dispatch => {
      return{
          status:false
      }
-    } catch (err) {
-        
-        // alert("Oops You entered Wrong password or username !")
-       
+    } catch (error) {
+
         dispatch({
             type: LOGIN_FAIL
         })
-        return{
-            status:true
+
+        if(error.response){
+           return{
+               status:error.response.status
+           }
         }
+
     }
 
 };
@@ -149,11 +152,15 @@ export const signup = (username,email, password) => async dispatch => {
         });
 
     } catch (err) {
-        
-        alert("username taken")
+                
         dispatch({
             type: SIGNUP_FAIL
         })
+        if(err){
+            return{
+                status:err.response.status
+            }
+        }
     }
 };
 

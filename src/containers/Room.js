@@ -164,7 +164,7 @@ function Room(props) {
                     <>
                       {tasks.map((task) => (
                         <Card className="mt-5 mb-3">
-                          {!state.auth.user.id===task.auther?<>
+                          {state.auth.user.id!=task.auther?<>
                             {completed.includes(task.id) ? (
                             <>
                               <Alert severity="success">

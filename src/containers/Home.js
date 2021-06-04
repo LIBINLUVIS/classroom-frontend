@@ -27,7 +27,7 @@ function Home({}) {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <rect width="1130" height="832" fill="" />
+            <rect width="1130" height="832" fill="" id="screen-icon" />
             <g id="cls">
               <path
                 id="Vector"

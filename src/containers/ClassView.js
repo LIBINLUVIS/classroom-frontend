@@ -32,6 +32,7 @@ function Classview() {
   const [classview, setClassview] = useState([]);
   const [classviewlen,setClassviewlen]= useState(0)
   const [open, setOpen] = React.useState(false);
+  const [joinalert,setJoinalert] = useState(false)
   const [status, setStatus] = useState(true);
   const [joinclass, setJoinclass] = useState(false);
   const [createclass, setCreateclass] = useState(false);
@@ -62,6 +63,7 @@ function Classview() {
     const res = axios.get(api1, config).then((res) => {
       setClassview(res.data);
       setStatus(false);
+      setClassviewlen(res.data.length)
     });
   }, [createclass]);
   useEffect(() => {
@@ -86,6 +88,12 @@ function Classview() {
 
     setOpen(false);
   };
+  const joinhandleClose=(event,reason)=>{
+    if(reason==="clickaway"){
+      return;
+    }
+    setJoinalert(false)
+  }
 
   const join = () => {
     const class_id = prompt("Enter the Class Code");
@@ -96,12 +104,12 @@ function Classview() {
       },
     };
     if (class_id) {
-      setJoinclass(true);
-      const joinapi = `http://127.0.0.1:8000/Joinclass/${class_id}/`;
+      const joinapi = `Joinclass/${class_id}/`;
       axios
         .get(joinapi, config)
         .then((res) => {
           setOpen(true);
+          setJoinclass(true)
         })
         .catch((err) => {
           setAlert(true);
@@ -124,7 +132,7 @@ function Classview() {
         .post(api, body, config)
         .then((res) => {
           setCreateclass(true);
-          setOpen(true);
+          setJoinalert(true)
         })
         .catch((err) => {
           setAlert(true);
@@ -140,7 +148,7 @@ function Classview() {
     },
   }));
   const classes = useStyles();
-  
+
   return (
     <main>
       <div className="">
@@ -156,7 +164,7 @@ function Classview() {
         {user ? (
           <>
             <div className="text-center">
-              <h4 className="mt-3">Your Classes</h4>
+              <h4 className="mt-3" style={{color:"white"}}>Your Classes</h4>
               <hr />
             </div>
             <div className="container">
@@ -210,12 +218,12 @@ function Classview() {
                               </Card.Body>
                             </Card>
                             <Snackbar
-                              open={open}
+                              open={joinalert}
                               autoHideDuration={6000}
-                              onClose={handleClose}
+                              onClose={joinhandleClose}
                             >
-                              <Alert onClose={handleClose} severity="success">
-                                Class Action Successfull !
+                              <Alert onClose={joinhandleClose} severity="success">
+                                Class Created Successfull !
                               </Alert>
                             </Snackbar>
                           </div>
@@ -251,14 +259,14 @@ function Classview() {
                                     onClose={handleClose}
                                     severity="success"
                                   >
-                                    Action Successfull !
+                                    Class Joined Successfull !
                                   </Alert>
                                 </Snackbar>
                               </div>
                             ))}
                           </>
                         ) : (
-                          <></>
+                          null
                         )}
                       </>
                     ) : (

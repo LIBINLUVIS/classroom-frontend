@@ -106,6 +106,7 @@ function Addwork(props) {
     };
 
     axios.post(api, body, config).then((res) => {
+
       setProgress(100);
       setTimeout(() => {
         setOpen(true);
@@ -114,7 +115,9 @@ function Addwork(props) {
       handleClick();
       setDiscription("");
     }).catch((err)=>{
-       setAlert(true)
+      
+        setAlert(true)
+
     })
   };
   const classes = useStyles();

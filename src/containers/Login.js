@@ -19,7 +19,7 @@ function Login({ login, isAuthenticated }) {
     },
   }));
   const classes = useStyles();
-  const [alert, setAlert] = useState(false);
+  const [alert, setAlert] = useState('');
   const [loginstatus,setLoginstatus]=useState(false);
   const [formdata, setFormdata] = useState({
     username: "",
@@ -35,9 +35,17 @@ function Login({ login, isAuthenticated }) {
     e.preventDefault();
 
     login(username, password).then((res) => {
-        console.log(res.status)
-      if (res.status) {
-        setAlert(true);
+      if(res){
+        if(res.status==400) {
+          console.log('400')
+          setAlert('Password or Username is Incorrect');
+        }
+        if(res.status==500){
+          console.log('500')
+          setAlert('Internal Server Error')
+        }  
+      }else{
+        setAlert('Network Error Please try again later')
       }
     });
   };
@@ -51,7 +59,7 @@ function Login({ login, isAuthenticated }) {
   
   return (
     <main>
-    <div className="container-login mt-5" >
+    <div className="container-login mt-5 mb-4" >
       <div className="app-wrapper">
       <h1 className="title">Sign In</h1>
       <p>Sign into your Account</p>
@@ -90,7 +98,7 @@ function Login({ login, isAuthenticated }) {
         <>
           <div className={classes.root} style={{marginTop:"20px"}}>
             <Alert severity="error">
-              Oops Your Password or Username is incorrect — check it out!
+                 {alert}— check it out!
             </Alert>
           </div>
         </>

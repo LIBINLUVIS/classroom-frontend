@@ -24,9 +24,11 @@ margin-bottom: auto;
 }
 @media screen and (max-width: 1024px) {
     .svg-icon {
-      margin-top: 150px;  
+      margin-top: 150px;    
+
     }
 }
+
 #hand_rotate{
     animation: floatAnim 3s infinite alternate;
     transform-origin:top;

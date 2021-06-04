@@ -26,7 +26,7 @@ class Works extends React.Component {
 
   componentDidMount() {
     var id = this.state.id;
-    fetch(`http://127.0.0.1:8000/getresponses/${id}/`)
+    fetch(`https://classroomfiles.herokuapp.com/getresponses/${id}/`)
       .then((response) => response.json())
       .then((item) => {
         this.setState({ datas: item });
@@ -82,7 +82,7 @@ class Works extends React.Component {
                         <td>{x.Message}</td>
                         <td>
                           <a
-                            href={`http://127.0.0.1:8000${x.file}/`}
+                            href={`${x.file}`}
                             target="_blank"
                           >
                             <FileCopyIcon />
